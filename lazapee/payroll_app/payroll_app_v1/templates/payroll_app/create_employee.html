@@ -1,0 +1,70 @@
+
+{% extends "payroll_app/base.html" %}
+{% block content %}
+<style>
+body {
+background-color: #f8f9fa; 
+}
+.container {
+max-width: 600px; 
+padding-top: 20px;
+}
+.form-container {
+background-color: #ffffff;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+}
+
+.navbar {
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .navbar a {
+            color: #fff;
+            padding: 0 10px;
+            text-decoration: none;
+        }
+</style>
+
+<title>Create Employee - LAZAPEE Payroll</title>
+</head>
+    {% if messages %}
+    <div class="alert alert-primary">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+<div class="container">
+<div class="form-container">
+<h4>Create Employee</h4>
+<form method="POST" action="{% url 'create_employee' %}">{% csrf_token %}
+ <div class="mb-3">
+<label for="nameInput" class="form-label">Name:</label>
+<input type="text" class="form-control" name ="name-input" id="name-input" placeholder="Enter name">
+</div>
+<div class="mb-3">
+<label for="idInput" class="form-label">ID Number:</label>
+<input type="text" class="form-control" name ="id-input" id="id-input" placeholder="Enter ID number">
+</div>
+<div class="mb-3">
+<label for="rateInput" class="form-label">Rate:</label>
+<input type="text" class="form-control" name ="rate-input" id="rate-input" placeholder="Enter rate">
+</div>
+<div class="mb-3">
+<label for="allowanceInput" class="form-label">Allowance (Optional):</label>
+<input type="text" class="form-control" name ="allowance-input" id="allowance-input" placeholder="Enter allowance">
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+</div>
+{% endblock %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

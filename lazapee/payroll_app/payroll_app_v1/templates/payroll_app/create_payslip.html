@@ -1,0 +1,102 @@
+{% extends "payroll_app/base.html" %}
+{% block content %}
+    <title>Payslips Page - LAZAPEE Payroll</title>
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Payroll Creation</h5>
+                <form method="POST" action="{% url 'create_payslip' %}">{% csrf_token %}
+                    <div class="mb-3">
+                        <label for="payrollFor" class="form-label">Payroll for:</label>
+                        <select class="form-select" id="recipient" name="recipient">
+                            <option selected>Choose...</option>
+                            <option value="all">All Employees</option>
+                            {% for i in employees %}
+                                <option value="{{ i.id }}">{{i.id_number}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col">
+                            <label for="month" class="form-label">Month:</label>
+                            <select class="form-select" id="month" name="month">
+                                <option selected>Choose...</option>
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="year" class="form-label">Year:</label>
+                            <input type="text" class="form-control" id="year" name ="year">
+                        </div>
+                        <div class="col">
+                            <label for="cycle" class="form-label">Cycle:</label>
+                            <select class="form-select" id="cycle" name="cycle">
+                                <option selected>Choose...</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+                {% if messages %}
+                    <div class="error-message">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Payslips Summary</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Number</th>
+                            <th>Date</th>
+                            <th>Cycle</th>
+                            <th>Total Pay</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in payslips %}
+                            <tr>
+                                <td>{{i.id_number.id_number}}</td>
+                                <td>{{i.month}} {{i.date_range}}, {{i.year}}</td>    
+                                <td>{{i.pay_cycle}}</td>    
+                                <td>{{i.total_pay}}</td>    
+                                <td><a class="btn btn-primary" href="{% url 'view_payslip' i.pk %}">View</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

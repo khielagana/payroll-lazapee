@@ -1,0 +1,112 @@
+{% extends "payroll_app/base.html" %}
+{% block content %}
+    <title>View Payslip - LAZAPEE Payroll</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px; 
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+        }
+        th, td {
+            padding: 8px;
+        }
+        th {
+            text-align: left; 
+        }
+        .net-pay {
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h4>Payslip Details</h4>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th colspan="2">General Payslip Details</th>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>{{p.id_number.name}}</td>
+                </tr>
+                <tr>
+                    <td>ID Number:</td>
+                    <td>{{p.id_number.id_number}}</td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td>{{p.month}} {{p.date_range}}, {{p.year}}</td>
+                </tr>
+                <tr>
+                    <td>Payslip ID:</td>
+                    <td>{{ p.pk }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Earnings</th>
+                </tr>
+                <tr>
+                    <td>Base Pay:</td>
+                    <td>PHP {{base_pay}}</td>
+                </tr>
+                <tr>
+                    <td>Allowances:</td>
+                    <td>PHP {{p.id_number.allowance}}</td>
+                </tr>
+                <tr>
+                    <td>Overtime:</td>
+                    <td>PHP {{p.overtime}}</td>
+                </tr>
+                <tr>
+                    <th>Gross Pay</th>
+                    <td>{{grosspay}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Deductions</th>
+                </tr>
+                {% if p.pay_cycle == 1 %}
+                <tr>
+                    <td>W/Holding Tax:</td>
+                    <td>{{p.deductions_tax}}</td>
+                </tr>
+                <tr>
+                    <td>Pag-ibig:</td>
+                    <td>{{p.pag_ibig}}</td>
+                </tr>
+                <tr>
+                    <th>Total Deductions</th>
+                    <td>{{p.total_deduc}}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td>W/Holding Tax:</td>
+                    <td>{{p.deductions_health}}</td>
+                </tr>
+                <tr>
+                    <td>PhilHealth:</td>
+                    <td>{{p.philhealth}}</td>
+                </tr>
+                <tr>
+                    <td>SSS:</td>
+                    <td>{{p.sss}}</td>
+                </tr>
+                <tr>
+                    <th>NET DEDUCTIONS</th>
+                    <td>{{p.total_deduc}}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th class="net-pay">Net Pay:</th>
+                    <td class="net-pay" style="font-weight: bold;">{{p.total_pay}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,107 @@
+{% extends "payroll_app/base.html" %}
+{% block content %}
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #f4f4f4;
+            color: #555;
+        }
+        .button {
+            padding: 5px 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .green {
+            background-color: #4CAF50;
+        }
+        .blue {
+            background-color: #008CBA;
+        }
+        .red {
+            background-color: #f44336;
+        }
+        .gray {
+            background-color: #808080;
+            float: right; 
+        }
+        input[type="text"] {
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .table-container {
+            margin-top: 20px; 
+            border: 1px solid #ffffff; 
+            padding: 20px; 
+            background-color: #ffffff;
+        }
+        
+        form {
+            display: inline; 
+            margin-right: 3px; 
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+    <div class="table-container">
+        <h2 style="float: left;">Employees</h2>
+        <button class="button gray" onclick="location.href='{% url 'create_employee' %}';">+New Employee</button>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>ID Number</th>
+                <th>Rate</th>
+                <th>Allowance</th>
+                <th>Overtime</th>
+                <th>Options</th>
+            </tr>
+            <tbody>
+                {% for i in employees %}
+            <tr>            
+                <td>{{ i.name }}</td>
+                <td>{{ i.id_number }}</td>
+                <td>{{ i.rate }}</td>
+                <td>{{ i.allowance }}</td>
+                <td>{{ i.overtime_pay }}</td>
+                <td>
+                    <form action="{% url 'update_employee' i.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="button blue">Update</button>
+                    </form>
+                    <form action="{% url 'delete_employee' i.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="button red">Delete</button>
+                    </form>
+                    <form action="{% url 'add_overtime' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="employee_id" value="{{ i.id }}">
+                        <input type="text" name="overtime_hours" placeholder="Hours">
+                        <button type="submit" class="button green">Add Overtime</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    {% if messages %}
+        <div class="error-message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+</body>
+</html>
+{% endblock %}
